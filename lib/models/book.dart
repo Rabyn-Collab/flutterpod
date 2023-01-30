@@ -27,6 +27,14 @@ class Book{
     );
   }
 
+  @override
+  String toString() {
+    return 'Book('
+    'imageUrl: $imageUrl,'
+    'title: $title,'
+    ')';
+  }
+
 }
 
 List<Book> books = [
@@ -39,7 +47,7 @@ List<Book> books = [
   ),
   Book(
       imageUrl: 'assets/images/mocking.jpg',
-      title: 'Mockingbird Chapter 3',
+      title: 'Mockingbird Chapter 2',
       detail: 'To Kill a Mockingbird is a novel by the American author Harper Lee. It was published in 1960 and was instantly successful. In the United States, it is widely read in high schools and middle schools. To Kill a Mockingbird has become a classic of modern American literature, winning the Pulitzer Prize.',
       genre: 'horror',
       rating: '⭐⭐⭐⭐'

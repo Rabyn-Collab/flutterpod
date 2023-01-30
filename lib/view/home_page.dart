@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutterpod/view/detail_page.dart';
+import 'package:get/get.dart';
 import '../models/book.dart';
 
 
@@ -44,46 +46,54 @@ class HomePage extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index){
                   final book = books[index];
-                  return Container(
-                    width: 370.w,
-                    child: Padding(
-                      padding:  EdgeInsets.only(right: 10, left: index == 0? 10: 0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            //borderRadius: BorderRadius.only(topRight: Radius.circular(10)),
-                            child: Image.asset(
-                              book.imageUrl,
-                              width: 150.w,height: 260.h,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          Expanded(
-                            child: Card(
-                              child: Container(
-                                padding: EdgeInsets.only(left: 10),
-                                height: 200.h,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                  Text(book.title, style: TextStyle(fontSize: 17.sp),),
-                                    Text(book.detail, style: TextStyle(fontSize: 15.sp),maxLines: 4,),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(book.rating),
-                                        Text(book.genre,style: TextStyle(fontSize: 14.sp),)
-                                      ],
-                                    )
-                                  ],
+                  return InkWell(
+                    onTap: (){
+                     Get.to(() => DetailPage(book), transition: Transition.leftToRight);
+                    },
+                    child: Container(
+                      width: 370.w,
+                      child: Padding(
+                        padding:  EdgeInsets.only(right: 10, left: index == 0? 10: 0),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              //borderRadius: BorderRadius.only(topRight: Radius.circular(10)),
+                              child: Hero(
+                                tag: book.title,
+                                child: Image.asset(
+                                  book.imageUrl,
+                                  width: 150.w,height: 260.h,
+                                  fit: BoxFit.cover,
                                 ),
                               ),
                             ),
-                          )
-                        ],
+                            Expanded(
+                              child: Card(
+                                child: Container(
+                                  padding: EdgeInsets.only(left: 10),
+                                  height: 200.h,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    children: [
+                                    Text(book.title, style: TextStyle(fontSize: 17.sp),),
+                                      Text(book.detail, style: TextStyle(fontSize: 15.sp),maxLines: 4,),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(book.rating),
+                                          Text(book.genre,style: TextStyle(fontSize: 14.sp),)
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutterpod/view/home_page.dart';
+import 'package:get/get.dart';
 
 
 
@@ -17,8 +18,12 @@ class Home extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (BuildContext context, Widget? child) {
-      return  MaterialApp(
+      return  GetMaterialApp(
           home: HomePage(),
+          theme: ThemeData(
+            fontFamily: 'Nunito',
+            useMaterial3: true
+          ),
           debugShowCheckedModeBanner: false,
         );
       },
