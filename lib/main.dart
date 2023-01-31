@@ -33,12 +33,3 @@ class Home extends StatelessWidget {
   }
 }
 
-
-
-class NewSome extends StatelessWidget {
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
-}
