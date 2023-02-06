@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutterpod/view/widgets/tab_bar_widgets.dart';
 
 
 class HomePage extends StatelessWidget {
@@ -39,7 +40,7 @@ class HomePage extends StatelessWidget {
           body: TabBarView(
               physics: NeverScrollableScrollPhysics(),
               children: [
-             Text('popular'),
+              TabBarWidget(),
              Text('top rated'),
              Text('upcoming'),
           ]
