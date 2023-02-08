@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutterpod/view/widgets/tab_bar_widgets.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
+enum CategoryType{
+  popular,
+  top_rated,
+  upcoming
+}
 
 class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    FlutterNativeSplash.remove();
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -40,9 +47,9 @@ class HomePage extends StatelessWidget {
           body: TabBarView(
               physics: NeverScrollableScrollPhysics(),
               children: [
-              TabBarWidget(),
-             Text('top rated'),
-             Text('upcoming'),
+              TabBarWidget(CategoryType.popular),
+              TabBarWidget(CategoryType.top_rated),
+              TabBarWidget(CategoryType.upcoming),
           ]
           )
       ),

@@ -40,7 +40,9 @@ class PopularMovie extends StateNotifier<MovieState>{
 
 
 class TopRatedMovie extends StateNotifier<MovieState>{
-  TopRatedMovie(super.state );
+  TopRatedMovie(super.state ){
+    getMovieByCategory();
+  }
 
   Future<void> getMovieByCategory() async{
     state = state.copyWith(isLoad: true, isError: false);
@@ -60,7 +62,9 @@ class TopRatedMovie extends StateNotifier<MovieState>{
 
 
 class UpcomingMovie extends StateNotifier<MovieState>{
-  UpcomingMovie(super.state );
+  UpcomingMovie(super.state ){
+    getMovieByCategory();
+  }
 
   Future<void> getMovieByCategory() async{
     state = state.copyWith(isLoad: true, isError: false);
