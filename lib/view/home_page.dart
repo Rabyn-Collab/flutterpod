@@ -22,7 +22,7 @@ class HomePage extends StatelessWidget {
             physics: NeverScrollableScrollPhysics(),
               tabs: [
             Tab(text: 'Popular'),
-            Tab(text: 'Top Rated'),
+            Tab(text: 'Top Rates'),
             Tab(text: 'Upcoming'),
           ]),
           toolbarHeight: 100.h,
