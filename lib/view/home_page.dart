@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutterpod/view/search_page.dart';
 import 'package:flutterpod/view/widgets/tab_bar_widgets.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:get/get.dart';
 
 enum CategoryType{
   popular,
@@ -37,7 +39,9 @@ class HomePage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('Tmdb Movies', style: TextStyle(fontSize: 25.sp),),
-                    IconButton(onPressed: (){}, icon: Icon(Icons.search, size: 30,)),
+                    IconButton(onPressed: (){
+                      Get.to(() => SearchPage());
+                    }, icon: Icon(Icons.search, size: 30,)),
                   ],
                 ),
               ],
@@ -47,9 +51,9 @@ class HomePage extends StatelessWidget {
           body: TabBarView(
               physics: NeverScrollableScrollPhysics(),
               children: [
-              TabBarWidget(CategoryType.popular),
-              TabBarWidget(CategoryType.top_rated),
-              TabBarWidget(CategoryType.upcoming),
+              TabBarWidget(CategoryType.popular, '1'),
+              TabBarWidget(CategoryType.top_rated, '2'),
+              TabBarWidget(CategoryType.upcoming, '3'),
           ]
           )
       ),
