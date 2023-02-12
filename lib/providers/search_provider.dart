@@ -12,7 +12,7 @@ final defaultState = MovieState(
   isLoadMore: false
 );
 
-final searchProvider = StateNotifierProvider<SearchMovie, MovieState>((ref) => SearchMovie(defaultState));
+final searchProvider = StateNotifierProvider.autoDispose<SearchMovie, MovieState>((ref) => SearchMovie(defaultState));
 
 class SearchMovie extends StateNotifier<MovieState>{
   SearchMovie(super.state );

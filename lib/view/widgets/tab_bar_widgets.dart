@@ -2,7 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/get.dart';
 import '../../providers/movie_provider.dart';
+import '../detail_page.dart';
 import '../home_page.dart';
 
 
@@ -27,9 +29,15 @@ TabBarWidget(this.categoryType, this.someKey);
            onNotification: (ScrollEndNotification onNotification) {
              final before = onNotification.metrics.extentBefore;
              final max = onNotification.metrics.maxScrollExtent;
-
              if (before == max) {
-              ref.read(popularProvider.notifier).loadMore();
+               if(categoryType == CategoryType.popular){
+                 ref.read(popularProvider.notifier).loadMore();
+               }else if(categoryType == CategoryType.top_rated){
+                 ref.read(topRatedProvider.notifier).loadMore();
+               }else{
+                 ref.read(UpcomingProvider.notifier).loadMore();
+               }
+
 
              }
              return true;
@@ -45,12 +53,17 @@ TabBarWidget(this.categoryType, this.someKey);
                ),
                itemBuilder: (context, index){
                  final movie = movieData.movies[index];
-                 return CachedNetworkImage(
-                   errorWidget: (c, s, d) => Image.asset('ass'),
-                   placeholder: (c, s) => Center(child: SpinKitFadingCube(
-                     color: Colors.pinkAccent,
-                   )),
-                   imageUrl: 'https://image.tmdb.org/t/p/w600_and_h900_bestv2${movie.poster_path}'
+                 return InkWell(
+                   onTap: (){
+                     Get.to(() => DetailPage(movie));
+                   },
+                   child: CachedNetworkImage(
+                     errorWidget: (c, s, d) => Image.asset('ass'),
+                     placeholder: (c, s) => Center(child: SpinKitFadingCube(
+                       color: Colors.pinkAccent,
+                     )),
+                     imageUrl: 'https://image.tmdb.org/t/p/w600_and_h900_bestv2${movie.poster_path}'
+                   ),
                  );
                }
            ),

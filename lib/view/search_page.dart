@@ -46,7 +46,7 @@ class SearchPage extends ConsumerWidget {
                         itemBuilder: (context, index){
                           final movie = searchData.movies[index];
                           return CachedNetworkImage(
-                              errorWidget: (c, s, d) => Image.asset('ass'),
+                              errorWidget: (c, s, d) => Image.asset('assets/images/movie.png'),
                               placeholder: (c, s) => Center(child: SpinKitFadingCube(
                                 color: Colors.pinkAccent,
                               )),

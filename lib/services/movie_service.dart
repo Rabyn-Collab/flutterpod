@@ -18,9 +18,12 @@ class MovieService {
          'page': page
        });
 
+       print(response.data);
+
      final data = (response.data['results'] as List).map((e) => Movie.fromJson(e)).toList();
       return Right(data);
     }on DioError catch (err){
+      print(err);
       return Left(err.message);
     }
 
@@ -32,10 +35,11 @@ class MovieService {
        'api_key': apiKey,
        'query': searchText
      });
-
+print(response.data);
      final data = (response.data['results'] as List).map((e) => Movie.fromJson(e)).toList();
      return Right(data);
    }on DioError catch (err){
+     print(err);
      return Left(err.message);
    }
 
