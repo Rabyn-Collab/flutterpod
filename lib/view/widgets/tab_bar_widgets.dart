@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_offline/flutter_offline.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
@@ -18,10 +19,28 @@ TabBarWidget(this.categoryType, this.someKey);
   Widget build(BuildContext context, ref) {
     final movieData = categoryType == CategoryType.popular ? ref.watch(popularProvider) :
     categoryType == CategoryType.top_rated ? ref.watch(topRatedProvider): ref.watch(UpcomingProvider);
+
      if(movieData.isLoad){
        return Center(child: CircularProgressIndicator());
      }else if(movieData.isError){
-       return Center(child: Text(movieData.errorMessage));
+       return OfflineBuilder(
+           connectivityBuilder: (c, connection, child) {
+
+             final bool connected = connection != ConnectivityResult.none;
+
+             return connected ? Column(
+               children: [
+                 TextButton(onPressed: (){
+                   ref.refresh(popularProvider);
+                   ref.refresh(UpcomingProvider);
+                   ref.refresh(topRatedProvider);
+                 }, child: Text('Refresh')),
+                 Text('Connection on'),
+               ],
+             ): Center(child: Text(movieData.errorMessage));
+           },
+         child: Container(),
+       );
      }else{
        return Padding(
          padding: const EdgeInsets.all(10.0),

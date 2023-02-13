@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutterpod/api.dart';
 import 'package:flutterpod/constant/constants.dart';
+import '../exception/api_exception.dart';
 import '../models/movie.dart';
 
 
@@ -18,13 +19,11 @@ class MovieService {
          'page': page
        });
 
-       print(response.data);
 
      final data = (response.data['results'] as List).map((e) => Movie.fromJson(e)).toList();
       return Right(data);
     }on DioError catch (err){
-      print(err);
-      return Left(err.message);
+      return Left(DioException.getDioError(err));
     }
 
   }
@@ -35,12 +34,15 @@ class MovieService {
        'api_key': apiKey,
        'query': searchText
      });
-print(response.data);
-     final data = (response.data['results'] as List).map((e) => Movie.fromJson(e)).toList();
-     return Right(data);
+    if((response.data['results'] as List).isEmpty){
+      return Left('try using another keyword');
+    }else{
+      final data = (response.data['results'] as List).map((e) => Movie.fromJson(e)).toList();
+      return Right(data);
+    }
+
    }on DioError catch (err){
-     print(err);
-     return Left(err.message);
+     return Left(DioException.getDioError(err));
    }
 
  }

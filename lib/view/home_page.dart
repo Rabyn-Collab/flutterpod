@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutterpod/view/search_page.dart';
+import 'package:flutterpod/view/widgets/connection_widget.dart';
 import 'package:flutterpod/view/widgets/tab_bar_widgets.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
@@ -51,9 +52,10 @@ class HomePage extends StatelessWidget {
           body: TabBarView(
               physics: NeverScrollableScrollPhysics(),
               children: [
-              TabBarWidget(CategoryType.popular, '1'),
-              TabBarWidget(CategoryType.top_rated, '2'),
-              TabBarWidget(CategoryType.upcoming, '3'),
+              ConnectionWidget(
+                  widget: TabBarWidget(CategoryType.popular, '1')),
+              ConnectionWidget(widget: TabBarWidget(CategoryType.top_rated, '2')),
+              ConnectionWidget(widget: TabBarWidget(CategoryType.upcoming, '3')),
           ]
           )
       ),

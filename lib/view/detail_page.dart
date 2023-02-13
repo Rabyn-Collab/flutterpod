@@ -21,7 +21,7 @@ DetailPage(this.movie);
              height: 300,
              child: videoData.when(
                  data: (data){
-                 return VideoPlay(data[0]);
+                 return data.isEmpty ? Text('no -video'): VideoPlay(data[0]);
                  },
                  error: (err, stack) => Center(child: Text('$err')),
                  loading: () => Container()
