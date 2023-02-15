@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "206166890342",
+    "project_id": "fire-some",
+    "storage_bucket": "fire-some.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:206166890342:android:15b2365078f05aecac5aa7",
+        "android_client_info": {
+          "package_name": "com.example.flutterpod"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "206166890342-0251qqcp394autju63jchr43a8njf8bv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsmwy-S6wgd8qsXeruwC6NgBMqnNTkVO4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "206166890342-0251qqcp394autju63jchr43a8njf8bv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -2,7 +2,7 @@
     package="com.example.flutterpod">
     <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="Movie Tmdb"
+        android:label="Sample Chat"
         android:name="${applicationName}"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/launcher_icon">
