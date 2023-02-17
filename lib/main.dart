@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutterpod/view/home_page.dart';
+import 'package:flutterpod/view/status_page.dart';
 import 'package:get/get.dart';
 import 'firebase_options.dart';
 
@@ -28,7 +29,7 @@ class Home extends StatelessWidget {
       splitScreenMode: true,
       builder: (BuildContext context, Widget? child) {
       return  GetMaterialApp(
-          home: HomePage(),
+          home: StatusPage(),
           theme:ThemeData.dark(),
           debugShowCheckedModeBanner: false,
         );
