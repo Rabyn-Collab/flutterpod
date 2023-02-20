@@ -1,16 +1,35 @@
 import 'dart:io';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutterpod/constant/firebase_instances.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
+final userStream = StreamProvider.autoDispose.family((ref, String userId) => AuthService.getUserById(userId));
 
 class AuthService{
 
 
-  Future<Either<String, bool>> userSignUp({
+ static CollectionReference userDb = FirebaseInstances.fireStore.collection('users');
+
+ static Stream<types.User> getUserById(String userId){
+     return userDb.doc(userId).snapshots().map((event) {
+       final json = event.data() as Map<String, dynamic>;
+       return types.User(
+         id: event.id,
+         firstName: json['firstName'],
+         imageUrl: json['imageUrl'],
+         metadata: {
+           'email': json['metadata']['email'],
+           'token':json['metadata']['token']
+         }
+       );
+     });
+  }
+
+static  Future<Either<String, bool>> userSignUp({
   required  String email,
   required String password,
   required String username,
@@ -47,6 +66,32 @@ class AuthService{
   }
 
 
+
+ static Future<Either<String, bool>> userLogin({
+    required  String email,
+    required String password,
+  }) async{
+    try{
+      final credential = await FirebaseInstances.firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: password);
+      return Right(true);
+
+    } on FirebaseAuthException catch(err){
+      return  Left('${err.message}');
+    }
+
+  }
+
+
+static  Future<Either<String, bool>> userLogOut() async{
+    try{
+      final credential = await FirebaseInstances.firebaseAuth.signOut();
+      return Right(true);
+    } on FirebaseAuthException catch(err){
+      return  Left('${err.message}');
+    }
+
+  }
 
 
 }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -35,6 +37,32 @@ class Home extends StatelessWidget {
         );
       },
 
+    );
+  }
+}
+
+
+class Counter extends StatelessWidget {
+
+ StreamController<int> numbers = StreamController();
+
+ int number = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: StreamBuilder<int>(
+          stream: numbers.stream,
+          builder: (context, snapshot) {
+            return Center(child: Text(snapshot.data.toString(), style: TextStyle(fontSize: 20, color: Colors.white),));
+          }
+        ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+          numbers.sink.add(number++);
+        },
+        child: Icon(Icons.add),
+      ),
     );
   }
 }
