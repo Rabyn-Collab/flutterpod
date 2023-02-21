@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutterpod/models/auth_state.dart';
+import 'package:flutterpod/models/common_state.dart';
 import 'package:flutterpod/services/auth_service.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -8,14 +8,14 @@ import '../constant/firebase_instances.dart';
 
 final authStream = StreamProvider((ref) => FirebaseInstances.firebaseAuth.authStateChanges());
 
-final authProvider = StateNotifierProvider<AuthProvider, AuthState>((ref) => AuthProvider(
-    AuthState(
+final authProvider = StateNotifierProvider<AuthProvider, CommonState>((ref) => AuthProvider(
+    CommonState(
         errMessage: '',
         isError: false,
         isLoad: false,
         isSuccess: false
     )));
-class AuthProvider extends StateNotifier<AuthState>{
+class AuthProvider extends StateNotifier<CommonState>{
   AuthProvider(super.state);
 
 
