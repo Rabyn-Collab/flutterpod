@@ -37,6 +37,24 @@ class PostProvider extends StateNotifier<CommonState>{
 
   }
 
+   Future<void> postUpdate({
+    required  String title,
+    required String detail,
+    required String postId,
+    String? imageId,
+    XFile? image
+  }) async{
+     state = state.copyWith(isLoad: true, isError: false, isSuccess: false, errMessage: '');
+     final response = await PostService.postUpdate(title: title, detail: detail, postId: postId, image: image, imageId: imageId);
+     response.fold(
+             (l) {
+           state = state.copyWith(isLoad: false, isError: true, isSuccess: false, errMessage: l);
+         },
+             (r) {
+           state = state.copyWith(isLoad: false, isError: false, isSuccess: r, errMessage: '');
+         }
+     );
+  }
 
 
 

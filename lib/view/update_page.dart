@@ -4,24 +4,49 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutterpod/constant/firebase_instances.dart';
 import 'package:get/get.dart';
-
 import '../common_widgets/snack_show.dart';
-import '../providers/auth_provider.dart';
+import '../models/post.dart';
 import '../providers/common_provider.dart';
 import '../providers/post_provider.dart';
 
+class User{
+  String mnio = 'li';
+  void method(){
+    mnio = 'lio';
+  }
+}
 
 
-class CreatePage extends ConsumerWidget{
+m(){
+  User()..mnio = 'like';
+}
 
-  final titleController = TextEditingController();
-  final detailController = TextEditingController();
+class UpdatePage extends ConsumerStatefulWidget {
+
+  final Post postData;
+  UpdatePage(this.postData);
+
+  @override
+  ConsumerState<UpdatePage> createState() => _UpdatePageState();
+}
+
+class _UpdatePageState extends ConsumerState<UpdatePage> {
+  TextEditingController titleController = TextEditingController();
+  TextEditingController detailController = TextEditingController();
 
   final _form = GlobalKey<FormState>();
 
   final uid = FirebaseInstances.fireChat.firebaseUser!.uid;
+
   @override
-  Widget build(BuildContext context, ref) {
+  void initState() {
+   titleController..text = widget.postData.title;
+   detailController..text = widget.postData.detail;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     ref.listen(postProvider, (previous, next) {
       if(next.isError){
         SnackShow.showFailure(context, next.errMessage);
@@ -84,7 +109,7 @@ class CreatePage extends ConsumerWidget{
                         hintText: "detail",
                         border: OutlineInputBorder()),
                   ),
-                   InkWell(
+                  InkWell(
                     onTap: (){
                       Get.defaultDialog(
                           title: 'Select',
@@ -109,7 +134,7 @@ class CreatePage extends ConsumerWidget{
                       decoration: BoxDecoration(
                           border: Border.all(color: Colors.white)
                       ),
-                      child:image == null ? Center(child: Text('please select an image')) : Image.file(File(image.path)),
+                      child:image == null ? Image.network(widget.postData.imageUrl) : Image.file(File(image.path)),
                     ),
                   ),
                   SizedBox(
@@ -122,16 +147,18 @@ class CreatePage extends ConsumerWidget{
                         if(_form.currentState!.validate()){
 
 
-                            if(image == null){
-                              SnackShow.showFailure(context, 'please select an image');
-                            }else{
-                              ref.read(postProvider.notifier).postAdd(
-                                  title: titleController.text.trim(),
-                                  detail: detailController.text.trim(),
-                                  userId: uid,
-                                  image: image
-                              );
-                            }
+                          if(image == null){
+                            ref.read(postProvider.notifier).postUpdate(
+                                title: titleController.text.trim(), detail: detailController.text.trim(), postId: widget.postData.postId);
+                          }else{
+                            ref.read(postProvider.notifier).postUpdate(
+                                title: titleController.text.trim(),
+                                detail: detailController.text.trim(),
+                                postId: widget.postData.postId,
+                              image: image,
+                              imageId: widget.postData.imageId
+                            );
+                          }
 
 
 

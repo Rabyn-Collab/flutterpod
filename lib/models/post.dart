@@ -8,6 +8,13 @@ class Like{
     required this.likes,
     required this.usernames
 });
+
+  factory Like.fromJson(Map<String, dynamic> json){
+    return Like(
+        likes: json['likes'],
+        usernames: (json['usernames'] as List).map((e) => e as String).toList()
+    );
+  }
 }
 
 class Comment{
@@ -21,6 +28,16 @@ class Comment{
     required this.comment,
     required this.userName
 });
+
+
+  factory Comment.fromJson(Map<String, dynamic> json){
+    return Comment(
+        imageUrl: json['imageUrl'],
+        comment: json['comment'],
+        userName: json['userName']
+    );
+  }
+
 }
 
 
@@ -30,6 +47,7 @@ class Post{
   final String title;
   final String detail;
   final String imageUrl;
+  final String imageId;
   final Like like;
   final List<Comment> comments;
 
@@ -40,7 +58,8 @@ class Post{
     required this.comments,
     required this.detail,
     required this.postId,
-    required this.title
+    required this.title,
+    required this.imageId
 });
 
 

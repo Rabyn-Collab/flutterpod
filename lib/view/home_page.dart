@@ -1,7 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutterpod/constant/firebase_instances.dart';
+import 'package:flutterpod/services/post_service.dart';
 import 'package:flutterpod/view/create_page.dart';
+import 'package:flutterpod/view/update_page.dart';
 import 'package:get/get.dart';
 
 import '../providers/auth_provider.dart';
@@ -15,6 +18,7 @@ final userId = FirebaseInstances.firebaseAuth.currentUser!.uid;
   Widget build(BuildContext context, ref) {
     final userData = ref.watch(userStream(userId));
     final users = ref.watch(usersStream);
+    final postData = ref.watch(postStream);
     return Scaffold(
       appBar: AppBar(
         title: Text('Sample Chat'),
@@ -87,7 +91,82 @@ final userId = FirebaseInstances.firebaseAuth.currentUser!.uid;
                  error: (err, stack) => Center(child: Text('$err')),
                  loading: () => Container()
              ),
-           )
+           ),
+            Expanded(
+                child: postData.when(
+                    data: (data){
+
+                      return ListView.builder(
+                          itemCount: data.length,
+                          physics: BouncingScrollPhysics(),
+                          itemBuilder: (context, index){
+                            return Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                          width: 300,
+                                          child: Text(
+                                            data[index].title ,
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                          )),
+                                      if(data[index].userId == userId)  IconButton(
+                                          padding: EdgeInsets.zero,
+                                          constraints: BoxConstraints(),
+                                          onPressed: (){
+                                            Get.defaultDialog(
+                                              title: 'Customize Post',
+                                              content: Text('Edit or Remove Post'),
+                                              actions: [
+                                                IconButton(onPressed: (){
+                                                  Navigator.of(context).pop();
+                                                  Get.to(() => UpdatePage(data[index]));
+                                                }, icon: Icon(Icons.edit)),
+                                                IconButton(onPressed: (){}, icon: Icon(Icons.delete)),
+                                              ]
+                                            );
+                                          }, icon: Icon(Icons.more_horiz_sharp))
+                                    ],
+                                  ),
+                                  SizedBox(height: 20,),
+                                  CachedNetworkImage(
+                                    height: 400,
+                                    width: double.infinity,
+                                    fit: BoxFit.cover,
+                                    imageUrl: data[index].imageUrl,
+                                  ),
+                                  SizedBox(height: 20,),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                          width: 300,
+                                          child: Text(
+                                              data[index].detail ,
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                          )),
+                                    if(data[index].userId != userId)  IconButton(
+                                          padding: EdgeInsets.zero,
+                                          constraints: BoxConstraints(),
+                                          onPressed: (){}, icon: Icon(Icons.thumb_up_alt_outlined))
+                                    ],
+                                  )
+                                ],
+                              ),
+                            );
+                          }
+                      );
+                    },
+                    error: (err, stack) => Center(child: Text('$err')),
+                    loading: () => Center(child: CircularProgressIndicator())
+                )
+            )
           ],
         )
     );
