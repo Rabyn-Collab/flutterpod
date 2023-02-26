@@ -65,7 +65,7 @@ static List<Post> getPostData(QuerySnapshot snapshot){
 
       return Right(true);
 
-    } on FirebaseAuthException catch(err){
+    } on FirebaseException catch(err){
       return  Left('${err.message}');
     }
 
@@ -101,7 +101,7 @@ static List<Post> getPostData(QuerySnapshot snapshot){
      }
       return Right(true);
 
-    } on FirebaseAuthException catch(err){
+    } on FirebaseException catch(err){
       return  Left('${err.message}');
     }
 
@@ -115,33 +115,40 @@ static List<Post> getPostData(QuerySnapshot snapshot){
        await ref.delete();
 
       return Right(true);
-    } on FirebaseAuthException catch(err){
+    } on FirebaseException catch(err){
       return  Left('${err.message}');
     }
 
   }
 
-  static  Future<Either<String, bool>> addLike() async{
+  static  Future<Either<String, bool>> addLike(List<String> usernames, String postId, int like) async{
     try{
-      final credential = await FirebaseInstances.firebaseAuth.signOut();
+      final response = await postDb.doc(postId).update({
+        'like': {
+          'likes': like + 1,
+          'usernames': FieldValue.arrayUnion(usernames)
+        }
+      });
       return Right(true);
-    } on FirebaseAuthException catch(err){
+    } on FirebaseException catch(err){
       return  Left('${err.message}');
     }
 
   }
 
 
-  static  Future<Either<String, bool>> addComment() async{
+  static  Future<Either<String, bool>> addComment(List<Comment> comments, String postId) async{
     try{
-      final credential = await FirebaseInstances.firebaseAuth.signOut();
+      final response = await postDb.doc(postId).update({
+          'comments': FieldValue.arrayUnion(comments.map((e) => e.toJson()).toList())
+      });
       return Right(true);
-    } on FirebaseAuthException catch(err){
+    } on FirebaseException catch(err){
+      print(err.message);
       return  Left('${err.message}');
     }
 
   }
-
 
 
 }

@@ -2,18 +2,20 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutterpod/constant/firebase_instances.dart';
+import 'package:flutterpod/providers/post_provider.dart';
 import 'package:flutterpod/services/post_service.dart';
 import 'package:flutterpod/view/create_page.dart';
+import 'package:flutterpod/view/detail_page.dart';
 import 'package:flutterpod/view/update_page.dart';
 import 'package:get/get.dart';
-
 import '../providers/auth_provider.dart';
 import '../services/auth_service.dart';
-
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 class HomePage extends ConsumerWidget {
 
 final userId = FirebaseInstances.firebaseAuth.currentUser!.uid;
+late types.User user;
   @override
   Widget build(BuildContext context, ref) {
     final userData = ref.watch(userStream(userId));
@@ -26,6 +28,7 @@ final userId = FirebaseInstances.firebaseAuth.currentUser!.uid;
       drawer: Drawer(
         child: userData.when(
             data: (data){
+              user = data;
               return ListView(
                 children: [
                   DrawerHeader(
@@ -134,13 +137,17 @@ final userId = FirebaseInstances.firebaseAuth.currentUser!.uid;
                                     ],
                                   ),
                                   SizedBox(height: 20,),
-                                  CachedNetworkImage(
-                                    height: 400,
-                                    width: double.infinity,
-                                    fit: BoxFit.cover,
-                                    imageUrl: data[index].imageUrl,
+                                  InkWell(
+                                    onTap: (){
+                                      Get.to(()=> DetailPage(data[index], user));
+                                    },
+                                    child: CachedNetworkImage(
+                                      height: 400,
+                                      width: double.infinity,
+                                      fit: BoxFit.cover,
+                                      imageUrl: data[index].imageUrl,
+                                    ),
                                   ),
-                                  SizedBox(height: 20,),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
@@ -151,10 +158,30 @@ final userId = FirebaseInstances.firebaseAuth.currentUser!.uid;
                                             maxLines: 2,
                                             overflow: TextOverflow.ellipsis,
                                           )),
-                                    if(data[index].userId != userId)  IconButton(
-                                          padding: EdgeInsets.zero,
-                                          constraints: BoxConstraints(),
-                                          onPressed: (){}, icon: Icon(Icons.thumb_up_alt_outlined))
+                                    if(data[index].userId != userId)  Row(
+                                      children: [
+                                        IconButton(
+                                              // padding: EdgeInsets.zero,
+                                              // constraints: BoxConstraints(),
+                                              onPressed: (){
+                                                if(data[index].like.usernames.contains(user.firstName)){
+                                                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                                    duration: Duration(seconds: 1),
+                                                      content: Text('You have already like this post')
+                                                  ));
+                                                }else{
+                                                  ref.read(postProvider.notifier).addLike(
+                                                      [...data[index].like.usernames, user.firstName!],
+                                                      data[index].postId,
+                                                      data[index].like.likes
+                                                  );
+                                                }
+
+                                              }, icon: Icon(Icons.thumb_up_alt_outlined)),
+                                        if(data[index].like.likes != 0) Text('${data[index].like.likes}')
+                                      ],
+                                    )
                                     ],
                                   )
                                 ],

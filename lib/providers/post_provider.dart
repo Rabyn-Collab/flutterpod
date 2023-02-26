@@ -3,6 +3,8 @@ import 'package:flutterpod/models/common_state.dart';
 import 'package:flutterpod/services/post_service.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../models/post.dart';
+
 
 
 
@@ -57,5 +59,30 @@ class PostProvider extends StateNotifier<CommonState>{
   }
 
 
+    Future<void> addLike(List<String> usernames, String postId, int like) async{
+      state = state.copyWith(isLoad: true, isError: false, isSuccess: false, errMessage: '');
+      final response = await PostService.addLike(usernames, postId, like);
+      response.fold(
+              (l) {
+            state = state.copyWith(isLoad: false, isError: true, isSuccess: false, errMessage: l);
+          },
+              (r) {
+            state = state.copyWith(isLoad: false, isError: false, isSuccess: r, errMessage: '');
+          }
+      );
+  }
+
+    Future<void> addComment(List<Comment> comments, String postId) async{
+    state = state.copyWith(isLoad: true, isError: false, isSuccess: false, errMessage: '');
+    final response = await PostService.addComment(comments, postId);
+    response.fold(
+            (l) {
+          state = state.copyWith(isLoad: false, isError: true, isSuccess: false, errMessage: l);
+        },
+            (r) {
+          state = state.copyWith(isLoad: false, isError: false, isSuccess: r, errMessage: '');
+        }
+    );
+  }
 
 }
