@@ -7,6 +7,7 @@ import 'package:flutterpod/services/post_service.dart';
 import 'package:flutterpod/view/create_page.dart';
 import 'package:flutterpod/view/detail_page.dart';
 import 'package:flutterpod/view/update_page.dart';
+import 'package:flutterpod/view/user_detail_page.dart';
 import 'package:get/get.dart';
 import '../providers/auth_provider.dart';
 import '../services/auth_service.dart';
@@ -77,15 +78,20 @@ late types.User user;
                        itemBuilder: (context, index){
                        return Padding(
                          padding: const EdgeInsets.all(7.0),
-                         child: Column(
-                           children: [
-                             CircleAvatar(
-                               radius: 45,
-                               backgroundImage: NetworkImage(data[index].imageUrl!),
-                             ),
-                             SizedBox(height: 10,),
-                             Text(data[index].firstName!)
-                           ],
+                         child: InkWell(
+                           onTap: (){
+                             Get.to(() => UserDetailPage(data[index]),);
+                           },
+                           child: Column(
+                             children: [
+                               CircleAvatar(
+                                 radius: 45,
+                                 backgroundImage: NetworkImage(data[index].imageUrl!),
+                               ),
+                               SizedBox(height: 10,),
+                               Text(data[index].firstName!)
+                             ],
+                           ),
                          ),
                        );
                        }
