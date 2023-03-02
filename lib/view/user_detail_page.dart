@@ -37,7 +37,7 @@ class UserDetailPage extends ConsumerWidget {
                          ElevatedButton(onPressed:() async{
                            final response = await ref.read(roomProvider).roomCreate(user);
                            if(response!=null){
-                             Get.to(() => ChatPage(response));
+                             Get.to(() => ChatPage(room: response));
 
                            }
                          }, child: Text('Start Chat'))

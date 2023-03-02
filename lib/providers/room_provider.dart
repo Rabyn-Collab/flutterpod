@@ -5,8 +5,8 @@ import 'package:flutterpod/constant/firebase_instances.dart';
 
 
 
-final roomStream = StreamProvider((ref) => FirebaseInstances.fireChat.rooms());
-final messagesStream = StreamProvider.family((ref, types.Room room) => FirebaseInstances.fireChat.messages(room));
+final roomStream = StreamProvider.autoDispose((ref) => FirebaseInstances.fireChat.rooms());
+final messagesStream = StreamProvider.autoDispose.family((ref, types.Room room) => FirebaseInstances.fireChat.messages(room));
 
 
 final roomProvider = Provider((ref) => RoomProvider());

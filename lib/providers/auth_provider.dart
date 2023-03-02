@@ -6,7 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import '../constant/firebase_instances.dart';
 
 
-final authStream = StreamProvider((ref) => FirebaseInstances.firebaseAuth.authStateChanges());
+final authStream = StreamProvider.autoDispose((ref) => FirebaseInstances.firebaseAuth.authStateChanges());
 
 final authProvider = StateNotifierProvider<AuthProvider, CommonState>((ref) => AuthProvider(
     CommonState(

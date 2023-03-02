@@ -8,7 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 final userStream = StreamProvider.autoDispose.family((ref, String userId) => AuthService.getUserById(userId));
-final usersStream = StreamProvider((ref) => FirebaseInstances.fireChat.users());
+final usersStream = StreamProvider.autoDispose((ref) => FirebaseInstances.fireChat.users());
 
 class AuthService{
 
