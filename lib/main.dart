@@ -2,19 +2,28 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:get/get.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
+import 'models/user.dart';
 
 
-
+final box = Provider<List<User>>((ref) => []);
 
 void main() async{
 WidgetsFlutterBinding.ensureInitialized();
 await Future.delayed(Duration(milliseconds: 500));
+await Hive.initFlutter();
 
+Hive.registerAdapter(UserAdapter());
+final userBox = await Hive.openBox<User>('user');
 
-
-runApp(ProviderScope(child: Home()));
+runApp(ProviderScope(
+  overrides: [
+    box.overrideWithValue(userBox.values.toList())
+  ],
+    child: Home()
+));
 }
 
 class Home extends StatelessWidget {
