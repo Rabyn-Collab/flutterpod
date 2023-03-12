@@ -39,7 +39,7 @@ class AuthService{
       final response = await dio.post(Api.signUp, data: {
         'email': email,
         'password': password,
-        'fullname': full_name
+        'full_name': full_name
       });
       return Right(true);
     }on DioError catch (err){

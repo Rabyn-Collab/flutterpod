@@ -1,8 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutterpod/models/user_state.dart';
 import 'package:flutterpod/services/auth_service.dart';
+import 'package:hive/hive.dart';
 
 import '../main.dart';
+import '../models/user.dart';
 
 
 
@@ -46,6 +48,13 @@ class AuthProvider extends StateNotifier<UserState>{
             (l) => state = state.copyWith(isLoad: false,isError: true,isSuccess: false, errMessage: l),
             (r) => state = state.copyWith(isLoad: false,isError: false,isSuccess: r, errMessage: '')
     );
+
+  }
+
+  void  userLogOut() async{
+    final box =  Hive.box<User>('user');
+    box.clear();
+    state = state.copyWith(user: []);
 
   }
 

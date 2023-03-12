@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutterpod/view/status_page.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -37,6 +38,7 @@ class Home extends StatelessWidget {
       return  GetMaterialApp(
           theme:ThemeData.dark(),
           debugShowCheckedModeBanner: false,
+        home: StatusPage(),
         );
       },
 
