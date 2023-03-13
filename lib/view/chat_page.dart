@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
@@ -13,8 +15,9 @@ import '../providers/room_provider.dart';
 
 class ChatPage extends StatefulWidget {
   final types.Room room;
-  const ChatPage({required this.room});
-
+  final String token;
+  final String username;
+ const ChatPage(this.room, this.token, this.username);
   @override
   State<ChatPage> createState() => _ChatPageState();
 }
@@ -63,11 +66,35 @@ class _ChatPageState extends State<ChatPage> {
 
 
                 },
-                onSendPressed: (types.PartialText message) {
+                onSendPressed: (types.PartialText message)async {
                   FirebaseChatCore.instance.sendMessage(
                     message,
                     widget.room.id,
                   );
+
+                  final dio =Dio();
+                  try{
+                    final response = await dio.post('https://fcm.googleapis.com/fcm/send',
+                        data: {
+                          "notification": {
+                            "title": widget.username,
+                            "body": message.text,
+                            "android_channel_id": "High_importance_channel"
+                          },
+                          "to": widget.token
+
+                        }, options: Options(
+                            headers: {
+                              HttpHeaders.authorizationHeader : 'key=AAAAMACBF2Y:APA91bEp8jqxfkcy5vqZNFIkWYyQuyMdTVeC_RdmLwdhPY_Ktg1Xh6Ueu80M4L_TiKC_qJs_cK2SNU4vX89heqITEGSlAZfjOE0IWMdmTRBVTaIiPQsZw9Hv9WFq2KGH9UhlD7nCz2pZ'
+                            }
+                        )
+                    );
+                    print(response.data);
+
+                  }on FirebaseException catch (err){
+                    print(err);
+                  }
+
                 },
                 user: types.User(
                   id: FirebaseChatCore.instance.firebaseUser!.uid,

@@ -74,8 +74,15 @@ static  Future<Either<String, bool>> userSignUp({
     required String password,
   }) async{
     try{
+      final token = await FirebaseInstances.fireMessage.getToken();
       final credential = await FirebaseInstances.firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
+      await userDb.doc(credential.user!.uid).update({
+        'metadata': {
+          'email': email,
+          'token': token
+        }
+      });
       return Right(true);
 
     } on FirebaseAuthException catch(err){
